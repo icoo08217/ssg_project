@@ -8,11 +8,13 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
+        int wiseSayingLastId = 0;
+
         outer:
         while(true) {
+
             System.out.printf("명령) ");
             String cmd = sc.nextLine().trim();
-            int index = 1;
 
             switch (cmd) {
                 case "종료":
@@ -24,8 +26,9 @@ public class App {
 
                     System.out.printf("작가 : ");
                     String author = sc.nextLine().trim();
+                    int id = ++wiseSayingLastId; // 명언 글 번호 증가
 
-                    System.out.println( index + "번 명언이 등록되었습니다.\n");
+                    System.out.printf( "%d번 명언이 등록되었습니다.\n" , id);
                     break;
                 case "목록":
                     break;
