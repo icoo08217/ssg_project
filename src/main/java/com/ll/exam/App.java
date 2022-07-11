@@ -57,23 +57,27 @@ public class App {
             return;
         }
 
-        WiseSaying wiseSaying__ = null;
+        WiseSaying foundWiseSaying = findById(paramId);
 
-        for (WiseSaying wiseSaying___ : wiseSayings) {
-            if (wiseSaying___.id == paramId) {
-                wiseSaying__ = wiseSaying___;
-            }
-        }
-
-        if (wiseSaying__ == null) {
+        if (foundWiseSaying == null) {
             System.out.printf("%d번 명언은 존재하지 않습니다.\n" , paramId);
             return;
         }
 
         // 입력된 id에 해당하는 명언객체를 리스트에서 삭제
-        wiseSayings.remove(wiseSaying__);
+        wiseSayings.remove(foundWiseSaying);
 
         System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
+    }
+
+    private WiseSaying findById(int paramId) {
+        for (WiseSaying wiseSaying : wiseSayings) {
+            if (wiseSaying.id == paramId) {
+                return wiseSaying;
+            }
+        }
+
+        return null;
     }
 
     private void list(Rq rq) {
