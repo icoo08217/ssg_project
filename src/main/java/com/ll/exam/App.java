@@ -20,7 +20,6 @@ public class App {
 
         outer:
         while(true) {
-
             System.out.printf("명령) ");
             String cmd = sc.nextLine().trim();
 
@@ -30,20 +29,20 @@ public class App {
                 case "등록":
                     write(rq);
                     break;
+
                 case "목록":
                     list(rq);
-                    break;
-
-                case "수정":
                     break;
 
                 case "삭제":
                     remove(rq);
                     break;
 
+                case "수정":
+                    break;
+
                 case "종료":
                     break outer;
-
             }
         }
         sc.close();
@@ -76,7 +75,6 @@ public class App {
                 return wiseSaying;
             }
         }
-
         return null;
     }
 
