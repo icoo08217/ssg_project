@@ -14,7 +14,7 @@ public class App {
     public void run() throws JsonProcessingException {
         System.out.println("== 명언 SSG ==");
 
-        WiseSayingController wiseSayingController = new WiseSayingController();
+        WiseSayingController wiseSayingController = new WiseSayingController(sc);
 
         outer:
         while(true) {
@@ -26,7 +26,7 @@ public class App {
 
                 case "등록":
                     wiseSayingController.write(rq);
-                    wiseSayingController.restore();
+//                    wiseSayingController.restore();
                     break;
 
                 case "목록":

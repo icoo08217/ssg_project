@@ -5,8 +5,8 @@ import java.util.List;
 
 public class WiseSayingRepository {
 
-    public List<WiseSaying> wiseSayings;
-    public int wiseSayingLastId;
+    private List<WiseSaying> wiseSayings;
+    private int wiseSayingLastId;
 
     WiseSayingRepository(){
         wiseSayings = new ArrayList<>();
@@ -19,6 +19,35 @@ public class WiseSayingRepository {
                 return wiseSaying;
             }
         }
+        // 하나 찾기
         return null;
+    }
+    public List<WiseSaying> findAll() {
+        return wiseSayings;
+
+        // 다찾기
+    }
+    public WiseSaying write(String content, String author) {
+        int id = ++wiseSayingLastId;
+        WiseSaying wiseSaying = new WiseSaying(id, content, author);
+        wiseSayings.add(wiseSaying);
+
+        //파일 저장
+
+        return wiseSaying;
+    }
+
+    public void modify(int paramId, String content, String author) {
+        WiseSaying foundWiseSaying = findById(paramId);
+        foundWiseSaying.content = content;
+        foundWiseSaying.author = author;
+
+        // 파일 수정
+    }
+    public void remove(int paramId) {
+        WiseSaying foundWiseSaying = findById(paramId);
+        wiseSayings.remove(foundWiseSaying);
+
+        //파일 삭제
     }
 }
