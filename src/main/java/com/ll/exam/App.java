@@ -43,7 +43,7 @@ public class App {
                     break;
 
                 case "수정":
-                    update(rq);
+                    modify(rq);
                     break;
 
                 case "종료":
@@ -53,27 +53,34 @@ public class App {
         sc.close();
     }
 
-    public void update(Rq rq) { // 수정부분 구현 -- 수정?id=1
+    public void modify(Rq rq) { // 수정부분 구현 -- 수정?id=1
+        // URL에 입력된 id 얻기
         int paramId = rq.getIntParam("id", 0);
 
+        // URL에 입력된 id가 없다면 작업 중지
         if (paramId <= 0 || paramId > wiseSayings.size()) {
             System.out.println("올바른 id를 입력해주세요.");
             return;
         }
 
-        // 명언 리스트에서 id에 해당하는 명언을 가져와야함.
-        WiseSaying currentWiseSaying = wiseSayings.get(paramId-1);
-        String updateStr = currentWiseSaying.content;
-        String updateAuthor = currentWiseSaying.author;
+        // URL에 입력된 id에 해당하는 명언 객체 찾기
+        WiseSaying foundWiseSaying = findById(paramId);
 
-        System.out.println("기존 명언 : " + updateStr);
+        // 찾지 못했다면 중지
+        if (foundWiseSaying == null) {
+            System.out.printf("%d번 명언은 존재하지 않습니다.\n" , paramId);
+            return;
+        }
+
+        System.out.println("기존 명언 : " + foundWiseSaying.content);
         System.out.print("새 명언 : ");
-        currentWiseSaying.content = sc.nextLine().trim();
+        foundWiseSaying.content = sc.nextLine().trim();
 
-        System.out.println("기존 작가 : " + updateAuthor);
+        System.out.println("기존 작가 : " + foundWiseSaying.author);
         System.out.print("새 작가 : ");
-        currentWiseSaying.author = sc.nextLine().trim();
+        foundWiseSaying.author = sc.nextLine().trim();
 
+        System.out.printf("%d번 명언이 수정되었습니다.\n" , paramId) ;
     }
 
     public void remove(Rq rq) {
