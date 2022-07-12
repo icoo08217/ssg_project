@@ -1,13 +1,16 @@
 package com.ll.exam;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    private Scanner sc;
-    private List<WiseSaying> wiseSayings;
-    private int wiseSayingLastId;
+    Scanner sc;
+    List<WiseSaying> wiseSayings;
+    int wiseSayingLastId;
 
     public App() {
         sc = new Scanner(System.in);
@@ -15,7 +18,7 @@ public class App {
         wiseSayingLastId = 0;
     }
 
-    public void run() {
+    public void run() throws JsonProcessingException {
         System.out.println("== 명언 SSG ==");
 
         outer:
@@ -28,6 +31,7 @@ public class App {
 
                 case "등록":
                     write(rq);
+                    restore();
                     break;
 
                 case "목록":
@@ -39,6 +43,7 @@ public class App {
                     break;
 
                 case "수정":
+                    update(rq);
                     break;
 
                 case "종료":
@@ -48,7 +53,30 @@ public class App {
         sc.close();
     }
 
-    private void remove(Rq rq) {
+    public void update(Rq rq) { // 수정부분 구현 -- 수정?id=1
+        int paramId = rq.getIntParam("id", 0);
+
+        if (paramId <= 0 || paramId > wiseSayings.size()) {
+            System.out.println("올바른 id를 입력해주세요.");
+            return;
+        }
+
+        // 명언 리스트에서 id에 해당하는 명언을 가져와야함.
+        WiseSaying currentWiseSaying = wiseSayings.get(paramId-1);
+        String updateStr = currentWiseSaying.content;
+        String updateAuthor = currentWiseSaying.author;
+
+        System.out.println("기존 명언 : " + updateStr);
+        System.out.print("새 명언 : ");
+        currentWiseSaying.content = sc.nextLine().trim();
+
+        System.out.println("기존 작가 : " + updateAuthor);
+        System.out.print("새 작가 : ");
+        currentWiseSaying.author = sc.nextLine().trim();
+
+    }
+
+    public void remove(Rq rq) {
         int paramId = rq.getIntParam("id", 0);
 
         if (paramId == 0) {
@@ -69,7 +97,7 @@ public class App {
         System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
     }
 
-    private WiseSaying findById(int paramId) {
+    public WiseSaying findById(int paramId) {
         for (WiseSaying wiseSaying : wiseSayings) {
             if (wiseSaying.id == paramId) {
                 return wiseSaying;
@@ -78,7 +106,7 @@ public class App {
         return null;
     }
 
-    private void list(Rq rq) {
+    public void list(Rq rq) {
         System.out.println("번호 / 작가 / 명언");
         System.out.println("-------------------");
         for (int i = wiseSayings.size() - 1; i >= 0; i--) {
@@ -87,7 +115,7 @@ public class App {
         }
     }
 
-    private void write(Rq rq) {
+    public void write(Rq rq) {
         System.out.printf("명언 : ");
         String content = sc.nextLine().trim();
 
@@ -100,5 +128,11 @@ public class App {
         wiseSayings.add(wiseSaying);
 
         System.out.printf( "%d번 명언이 등록되었습니다.\n" , id);
+    }
+
+    public void restore() throws JsonProcessingException { // 모든 기능들이 끝나면 json파일을 새로 저장해야한다 ?
+        ObjectMapper objectMapper = new ObjectMapper();
+        String JsonStr = objectMapper.writeValueAsString(wiseSayings);
+        System.out.println(JsonStr);
     }
 }

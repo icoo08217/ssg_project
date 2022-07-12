@@ -8,7 +8,7 @@ public class Rq {
     String path;
     Map<String, String> queryParams;
 
-    public Rq(String url) {
+    public Rq(String url) { // 요청이 들어올 때 마다 / map에 데이터를 가공하여 넣어준다.
         this.url = url;
         String[] urlBits = url.split("\\?", 2);
         this.path = urlBits[0];
