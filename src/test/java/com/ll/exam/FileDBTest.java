@@ -17,7 +17,11 @@ public class FileDBTest {
 
     @Test
     void 파일에_숫자_저장(){
-        Util.saveNumberToFile("test_data/last_id.json", 1);
+        Util.saveNumberToFile("test_data/last_id.txt", 100);
+
+        int rs = Util.readNumberFromFile("test_data/last_id.txt", 0);
+
+        assertEquals(100,rs);
 
 
     }
