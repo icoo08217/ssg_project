@@ -25,14 +25,21 @@ public class Util {
         dir.mkdirs();
     }
 
-    public static String getFromFile(String path) {
+    public static String readFromFile(String path) {
         try (RandomAccessFile reader = new RandomAccessFile(path, "r")) {
-            String body = reader.readLine();
+            String body = "";
+            String line = null;
 
-            return body;
+            while ((line = reader.readLine()) != null) {
+                body += new String(line.getBytes("iso-8859-1"), "utf-8") + "\n";
+            }
+
+            return body.trim();
         } catch (IOException e) {
+
         }
 
         return "";
     }
+
 }
