@@ -3,6 +3,7 @@ package com.ll.exam;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,14 +17,40 @@ public class FileDBTest {
     }
 
     @Test
+    void 특정_폴더에_존재하는_모든_파일의_이름들을_가져온다(){
+        Util.saveNumberToFile("test_data/1.txt" , 1);
+        Util.saveNumberToFile("test_data/2.txt" , 1);
+        Util.saveNumberToFile("test_data/3.txt" , 1);
+
+        List<String> fileNames = Util.getFileNamesFromDir("test_data");
+
+        assertEquals("1.txt" ,fileNames.get(2));
+        assertEquals("2.txt" ,fileNames.get(1));
+        assertEquals("3.txt" ,fileNames.get(0));
+
+    }
+
+    @Test
     void 파일에_숫자_저장(){
         Util.saveNumberToFile("test_data/last_id.txt", 100);
 
         int rs = Util.readNumberFromFile("test_data/last_id.txt", 0);
 
         assertEquals(100,rs);
+    }
 
+    @Test
+    public void 특정_폴더에_들어있는_JSON_파일들만_(){
+        WiseSaying wiseSaying = new WiseSaying(1, "내 사전에 불가능은 없다.", "나폴레옹");
+        Util.saveToFile("test_data/1.json" , wiseSaying.toJson());
 
+        String rs = Util.readFromFile("test_data/1.json");
+        Map<String, Object> map = Util.jsonToMap(rs);
+        WiseSaying loadedWiseSaying = new WiseSaying(map);
+
+        assertEquals(1 , map.get("id"));
+        assertEquals("내 사전에 불가능은 없다." , map.get("content"));
+        assertEquals(wiseSaying , loadedWiseSaying);
     }
 
     @Test
