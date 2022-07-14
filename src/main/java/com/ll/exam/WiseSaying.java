@@ -29,7 +29,7 @@ public class WiseSaying {
                     "author" : "%s"
                 }
                 """
-                .stripIndent()
+                .stripIndent() // tap 공간을 없애준다.
                 .formatted(id, content, author)
                 .trim();
     }
